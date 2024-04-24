@@ -28,9 +28,9 @@ class Reg(db.Model):
 
 @app.route('/')
 def index():
-    # items = Item.query.order_by[Item.price].all()
-    # return render_template('index.html', data=items)
-    return render_template('index.html')
+    items = Item.query.order_by(Item.price).all()
+    return render_template('index.html', data=items)
+
 
 @app.route('/create', methods=['POST', 'GET'])
 def create():
@@ -42,7 +42,7 @@ def create():
         try:
             db.session.add(item)
             db.session.commit()
-            return redirect('/')
+            return redirect('/s_user')
         except:
             'Error'
     else:
@@ -77,20 +77,20 @@ def sign():
     if request.method == 'POST':
         e_mail = request.form['e_mail']
         pasw = request.form['pasw']
-
-        try:
-            if e_mail in e_mails and pasw in pasws:
-                return redirect('/')
-        except:
-            'Error'
+        if e_mail in e_mails and pasw in pasws:
+                return redirect('/s_user')
     else:
         return render_template('sign.html')
-    return render_template('index.html')
+    return render_template('index_001.html')
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
+@app.route('/s_user')
+def f_user():
+    items = Item.query.order_by(Item.price).all()
+    return render_template('index_001.html', data=items)
 
 if __name__ == '__main__':
     app.run()
